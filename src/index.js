@@ -10,6 +10,7 @@ import NavBar from "./components/common/NavBar";
 // views
 import Home from "./views/Home";
 import colors from "./assets/styles/colors";
+import PharamcyView from "./views/PharmacyView";
 
 const theme = createTheme({
   palette: {
@@ -33,6 +34,7 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/pharmacy/:pharamcyId" element={<PharamcyView />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
