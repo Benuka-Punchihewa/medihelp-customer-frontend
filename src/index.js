@@ -13,6 +13,7 @@ import colors from "./assets/styles/colors";
 import PharamcyView from "./views/PharmacyView";
 import AllPharmacyView from "./views/AllPharmacyView";
 
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -37,6 +38,7 @@ root.render(
           <Route path="/" element={<Home />} />
           <Route path="/pharmacy/:pharamcyId" element={<PharamcyView />} />
           <Route path="/all-pharmacy" element={<AllPharmacyView/>} />
+          
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
