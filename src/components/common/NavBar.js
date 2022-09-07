@@ -14,7 +14,9 @@ import Popup from "../../components/common/Popup";
 
 const NavBar = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [showRegiserPopup, setshowRegiserPopup] = useState(false);
   const handlePopupClose = () => setShowPopup(false);
+  const handleRegisterPopupClose = () => setshowRegiserPopup(false);
 
     return (
     <React.Fragment>
@@ -44,7 +46,7 @@ const NavBar = () => {
               alignItems="center"
               sx={{ height: "100%" }}
             >
-              <Typography sx={{ ...navbarStyles.signInUpBtn }}>
+              <Typography sx={{ ...navbarStyles.signInUpBtn }}  onClick={() => setshowRegiserPopup(true)}>
                 Register
               </Typography>
               <Typography sx={{ ...navbarStyles.signInUpBtn }} onClick={() => setShowPopup(true)}>
@@ -55,7 +57,7 @@ const NavBar = () => {
         </Grid>
       </Box>
 
-     {/* custom popup */}
+     {/* signin popup */}
     <Popup
         width={650}
         show={showPopup}
@@ -101,6 +103,36 @@ const NavBar = () => {
           </Box>
       </Popup>
 
+    {/* register popup */}
+    <Popup
+        width={650}
+        show={showRegiserPopup}
+        onClose={handleRegisterPopupClose}
+      >
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="h4" fontWeight="bold" color="primary" textAlign={"center"} sx={{ mb: 6}}>
+                  Register
+            </Typography>
+            <Box sx={{ mb: 2 ,m: 3}}>
+              <TextField
+                id="outlined-basic"
+                variant="filled"
+                label="Email"
+                fullWidth
+              />
+            </Box>
+
+            <Box sx={{ mb: 5,m: 2,mt:6}}>
+              <TextField
+                id="outlined-password-input"
+                variant="filled"
+                label="Password"
+                type="password"
+                  fullWidth
+              />
+            </Box>
+          </Box>
+      </Popup>
     </React.Fragment>
   );
 };
