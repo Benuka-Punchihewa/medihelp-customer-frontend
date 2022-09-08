@@ -4,7 +4,7 @@ import constants from "../constants";
 // import store from "../store";
 
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzExZmU1ZmMwMmM0YzcwNzQ3Yzc3MzMiLCJlbWFpbCI6InN1bWVkaGFAZ21haWwuY29tIiwicm9sZSI6InBoYXJtYWN5IG93bmVyIiwicGhhcm1hY2llcyI6W3siX2lkIjoiNjMxMjA1NWQzNjFlMWJhYjY0OTZmZDMyIiwibmFtZSI6IlNhbWFyYXNpbmdoYSBQaGFybWFjeSJ9XSwiaWF0IjoxNjYyMjE4NDkwLCJleHAiOjE2NjIzMDQ4OTB9.8GhRzALo9BuDJZmtxTkswzZW6OrS1YpxS1uLR3pzQNc";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzExZmU1ZmMwMmM0YzcwNzQ3Yzc3MzMiLCJlbWFpbCI6InN1bWVkaGFAZ21haWwuY29tIiwicm9sZSI6InBoYXJtYWN5IG93bmVyIiwicGhhcm1hY2llcyI6W3siX2lkIjoiNjMxMjA1NWQzNjFlMWJhYjY0OTZmZDMyIiwibmFtZSI6IlNhbWFyYXNpbmdoYSBQaGFybWFjeSJ9LHsiX2lkIjoiNjMxNzdmNzM0NDgxZDU0ZTE3M2IyMDY3IiwibmFtZSI6IkdheWFuIFBoYXJtYWN5In0seyJfaWQiOiI2MzE4YzdhMzhhOWQ1ODJjNDk5MDJiNTgiLCJuYW1lIjoiTmV3IENlbnRyYWwgUGhhcm1hY3kgIn0seyJfaWQiOiI2MzE4Yzg3ZThhOWQ1ODJjNDk5MDJiNjIiLCJuYW1lIjoiU2FmZXdheSBDaGVtaXN0IFBoYXJtYWN5In0seyJfaWQiOiI2MzE4Yzk4YThhOWQ1ODJjNDk5MDJiNmUiLCJuYW1lIjoiT3NpbCBQaGFybWFjeSJ9XSwiaWF0IjoxNjYyNjQyODcyLCJleHAiOjE2NjI3MjkyNzJ9.WdxK2LI_E-c9WAtvr0dxU7UANSBQDApia-lKZmLy5VQ";
 
 export const getApi = () => {
   //   const newState = store.getState();
@@ -12,7 +12,7 @@ export const getApi = () => {
   return axios.create({
     baseURL: constants.API_BASE_URL,
     headers: {
-      //   Authorization: token ? "Bearer " + token : null,
+        Authorization: token ? "Bearer " + token : null,
       "Content-type": "application/json",
     },
   });

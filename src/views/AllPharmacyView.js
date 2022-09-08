@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React, { useState,useEffect } from "react";
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import MediaCard from '../components/common/MediaCard';
 import SearchBar from '../components/common/SearchBar';
+import { getallPharmacies } from '../service/pharmacy.service';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -15,7 +16,20 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function Test() {
+const AllPharmacyView = () => {
+
+const [page] = React.useState(1);
+
+const [pharmacydata,setPharmacydata] = useState([]);
+
+useEffect(() => {
+  getallPharmacies(page,10,"desc").then((response ) =>{
+    setPharmacydata(response.data.content)
+  })
+  
+}, [page])
+
+
   return (
     <Box sx={{ flexGrow: 1 }}>
        
@@ -27,12 +41,13 @@ export default function Test() {
       </Box>
       
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {Array.from(Array(6)).map((_, index) => (
-          <Grid item xs={2} sm={4} md={4} key={index}>
-            <Item><MediaCard/></Item>
+        {pharmacydata.map((item,index) => (
+            <Grid item xs={2} sm={4} md={4} key={index}>
+              <Item><MediaCard name={item.name} contactNumber={item.contactNumber}/></Item>
           </Grid>
         ))}
-      </Grid>
-    </Box>
+    </Grid>
+  </Box>
   );
 }
+export default AllPharmacyView

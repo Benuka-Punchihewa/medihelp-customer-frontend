@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import {Box } from "@mui/material";
 import colors from '../../assets/styles/colors';
 
-export default function ImgMediaCard() {
+const MediaCard = ({name , contactNumber}) => {
   return (
     <Card sx={{ borderRadius: "5px 5px 5px 5px",
                 boxShadow: "0px 8px 25px rgba(0, 0, 0, 0.25)",
@@ -22,12 +22,12 @@ export default function ImgMediaCard() {
       <CardActions sx={{ height: 55 }}>
         <Box >
             <Typography gutterBottom variant="h7" component="div" >
-                Samarashingha Pharmacy
+                {name}
             </Typography>
         </Box>
         <Box sx={{ mb:0, textAlign: 'right', fontWeight: 'bold' }}>
             <Typography gutterBottom variant="h7" component="div">
-                700 m Away
+                {contactNumber}
             </Typography>
         </Box>
        
@@ -37,3 +37,4 @@ export default function ImgMediaCard() {
     </Card>
   );
 }
+export default MediaCard
