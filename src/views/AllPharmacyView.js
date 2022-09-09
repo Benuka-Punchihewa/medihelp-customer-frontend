@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
-import { experimentalStyled as styled } from '@mui/material/styles';
+//import { experimentalStyled as styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
+//import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import MediaCard from '../components/common/MediaCard';
 import SearchBar from '../components/common/SearchBar';

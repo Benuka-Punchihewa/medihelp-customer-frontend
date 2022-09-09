@@ -4,9 +4,6 @@ import CardActions from '@mui/material/CardActions';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import {Box } from "@mui/material";
-import colors from '../../assets/styles/colors';
-
-const img1 = 'https://img.freepik.com/free-photo/two-african-american-pharmacist-working-drugstore-hospital-pharmacy-african-healthcare_627829-3378.jpg?w=740&t=st=1662667567~exp=1662668167~hmac=e7e203d082041f79b21a2ec1f136ab8dc0f9a7c260c5dfabdc130ed8e3c19a37'
 
 const MediaCard = ({name , contactNumber}) => {
   return (
