@@ -30,17 +30,15 @@ const theme = createTheme({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // <React.StrictMode>
     <ThemeProvider theme={theme}>
       <NavBar />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/pharmacy/:pharamcyId" element={<PharamcyView />} />
-          <Route path="/all-pharmacy" element={<AllPharmacyView/>} />
+          <Route path="/pharmacies/:pharamcyId" element={<PharamcyView />} />
+          <Route path="/pharmacies" element={<AllPharmacyView />} />
           <Route path="/google-map" element={<MapGoogle/>}/>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
-  // </React.StrictMode>
 );
