@@ -12,7 +12,6 @@ import Home from "./views/Home";
 import colors from "./assets/styles/colors";
 import PharamcyView from "./views/PharmacyView";
 import AllPharmacyView from "./views/AllPharmacyView";
-import MapGoogle from "./views/MapGoogle";
 
 const theme = createTheme({
   palette: {
@@ -36,9 +35,8 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/pharmacy/:pharamcyId" element={<PharamcyView />} />
-          <Route path="/all-pharmacy" element={<AllPharmacyView/>} />
-          <Route path="/google-map" element={<MapGoogle/>}/>
+          <Route path="/pharmacies/:pharamcyId" element={<PharamcyView />} />
+          <Route path="/pharmacies" element={<AllPharmacyView />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
