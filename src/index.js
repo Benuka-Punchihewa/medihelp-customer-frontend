@@ -11,6 +11,7 @@ import NavBar from "./components/common/NavBar";
 import Home from "./views/Home";
 import colors from "./assets/styles/colors";
 import PharamcyView from "./views/PharmacyView";
+import AllPharmacyView from "./views/AllPharmacyView";
 
 const theme = createTheme({
   palette: {
@@ -28,15 +29,16 @@ const theme = createTheme({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <ThemeProvider theme={theme}>
       <NavBar />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/pharmacy/:pharamcyId" element={<PharamcyView />} />
+          <Route path="/pharmacies/:pharamcyId" element={<PharamcyView />} />
+          <Route path="/pharmacies" element={<AllPharmacyView />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
