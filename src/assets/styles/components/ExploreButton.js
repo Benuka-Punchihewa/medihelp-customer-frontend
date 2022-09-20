@@ -12,11 +12,12 @@ const ExploreButton = ({ onClick }) => {
           size="large"
           onClick={onClick}
           sx={{
-            height: 40,
+            height: 50,
             borderRadius: "5px 5px 5px 5px",
             boxShadow: "0px 8px 25px rgba(0, 0, 0, 0.25)",
             "&:hover": { backgroundColor: colors.primary },
-            ml:7
+            ml:7,
+            fontWeight: 'bold',
           }}>
          Explore <ArrowForwardIcon sx={{m:3}} />
         </Button>

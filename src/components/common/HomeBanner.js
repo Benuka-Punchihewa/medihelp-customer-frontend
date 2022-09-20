@@ -46,15 +46,15 @@ const HomeBanner = () => {
       
       <Typography component="div" variant="h1" gutterBottom>
             <Box sx={{  
-            fontSize: 'h1.fontSize',
+            fontSize: 'h2.fontSize',
             position: "absolute",
             top: "60%",
-            width: "60%",
+            width: "50%",
             fontWeight: 'bold',
             ml:7,
             color:colors.primary,}}>
               
-              Best Way to find Medicine
+              Best Way to Find Medicine
             </Box>
   </Typography> 
      </Grid>
@@ -64,7 +64,7 @@ const HomeBanner = () => {
      <Box 
     sx={{           
             position: "absolute",
-            top: "100%",
+            top: "90%",
           }} 
     >
         <ExploreButton/>
