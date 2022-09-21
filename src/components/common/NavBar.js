@@ -14,10 +14,17 @@ import Popup from "../../components/common/Popup";
 import {createUser} from "../../service/signIn.service";
 import signIn from "../../models/signIn";
 import { popAlert } from "../../utils/alerts";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/authSlice";
+
 
 const NavBar = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showRegiserPopup, setshowRegiserPopup] = useState(false);
+
+  const dispatch = useDispatch();
+
+
   const [inputs, setInputs] = useState(signIn);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -32,8 +39,11 @@ const NavBar = () => {
     const response = await createUser(inputs);
 
     if (response.success) {
+      setLoading(false);
+      dispatch(authActions.login(response.data));
       response?.data?.message &&
         popAlert("Success!", response?.data?.message, "success").then((res) => {});
+        window.location.replace("/");
     } else {
       response?.data?.message &&
         popAlert("Error!", response?.data?.message, "error");
@@ -41,6 +51,7 @@ const NavBar = () => {
     }
     setLoading(false);
   };
+
 
     return (
     <React.Fragment>
@@ -80,6 +91,7 @@ const NavBar = () => {
           </Grid>
         </Grid>
       </Box>
+
 
      {/* signin popup */}
     <Popup
@@ -152,7 +164,8 @@ const NavBar = () => {
             </Box>
           </Box>
       </Popup>
-{/* 
+
+
     {/* register popup */}
     <Popup
         width={650}

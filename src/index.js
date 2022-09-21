@@ -14,6 +14,14 @@ import PharamcyView from "./views/PharmacyView";
 import AllPharmacyView from "./views/AllPharmacyView";
 import MapGoogle from "./views/MapGoogle";
 
+// redux
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+import store from './store';
+
+let persistor = persistStore(store);
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -30,15 +38,21 @@ const theme = createTheme({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <ThemeProvider theme={theme}>
-      <NavBar />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/pharmacies/:pharamcyId" element={<PharamcyView />} />
-          <Route path="/pharmacies" element={<AllPharmacyView />} />
-          <Route path="/google-map" element={<MapGoogle/>}/>
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+   
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider theme={theme}>
+           <NavBar />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/pharmacies/:pharamcyId" element={<PharamcyView />} />
+                <Route path="/pharmacies" element={<AllPharmacyView />} />
+                <Route path="/google-map" element={<MapGoogle/>}/>
+              </Routes>
+            </BrowserRouter>
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
+  
 );
