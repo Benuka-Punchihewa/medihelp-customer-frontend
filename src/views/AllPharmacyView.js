@@ -17,7 +17,7 @@ const AllPharmacyView = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    getallPharmacies(page, 12, "desc").then((response) => {
+    getallPharmacies(page, 9, "desc").then((response) => {
       setPharmacydata(response.data.content);
       setTotalPages(response.data.totalPages);
     });

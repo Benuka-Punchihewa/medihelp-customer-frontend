@@ -18,7 +18,7 @@ const MediaCard = ({ name, contactNumber }) => {
         component="img"
         alt="green iguana"
         height="190"
-        boxShadow="0px 8px 25px rgba(0, 0, 0, 0.25)"
+        boxshadow="0px 8px 25px rgba(0, 0, 0, 0.25)"
         image="https://img.freepik.com/free-photo/young-woman-pharmacist-pharmacy_1303-25541.jpg?w=2000"
       />
 
