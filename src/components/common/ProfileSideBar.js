@@ -1,7 +1,8 @@
 import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 
-const ProfileSidebar = () => {
+const ProfileSidebar = ({ active }) => {
   return (
     <React.Fragment>
       <Box display={"flex"} flexDirection={"column"} sx={{ m: 5 }}>
@@ -26,10 +27,28 @@ const ProfileSidebar = () => {
         <Divider />
         <br />
         <Box sx={{ m: 1 }}>
-          <Typography>Profile Settings</Typography>
+          <Link
+            style={{ textDecoration: "none", color: "inherit" }}
+            to="/profile-settings"
+          >
+            {active === "profile-settings" ? (
+              <Typography fontWeight={"bold"}>Profile Settings</Typography>
+            ) : (
+              <Typography>Profile Settings</Typography>
+            )}
+          </Link>
         </Box>
         <Box sx={{ m: 1 }}>
-          <Typography>My Orders</Typography>
+          <Link
+            style={{ textDecoration: "none", color: "inherit" }}
+            to="/my-orders"
+          >
+            {active === "my-orders" ? (
+              <Typography fontWeight={"bold"}>My Orders</Typography>
+            ) : (
+              <Typography>My Orders</Typography>
+            )}
+          </Link>
         </Box>
       </Box>
     </React.Fragment>

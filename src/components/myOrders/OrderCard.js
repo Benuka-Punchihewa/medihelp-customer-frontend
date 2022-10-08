@@ -21,7 +21,7 @@ const OrderCard = ({ id, pharmacy, price, onButtonClick }) => {
                 </Typography>
                 &nbsp; &nbsp;
                 <Typography variant="p">
-                  {(price && `#${id}`) || "N/A"}
+                  {(id && `#${id}`) || "N/A"}
                 </Typography>
               </Grid>
               <Grid item xs={12}>
