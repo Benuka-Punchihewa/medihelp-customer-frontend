@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from "react";
-import ProfileSidebar from "../assets/styles/components/ProfileSideBar";
 import {
   Box,
   Button,
@@ -16,12 +15,15 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import OrderCard from "../assets/styles/components/OrderCard";
 import { useSelector } from "react-redux";
 import { confirmOrder, getAllOrders } from "../service/order.service";
 import Popup from "../components/common/Popup";
-import Medicine from "../assets/styles/components/Medicine";
 import { popAlert } from "../utils/alerts";
+import Medicine from "../components/myOrders/Medicine";
+import ProfileSidebar from "../components/common/ProfileSideBar";
+import OrderCard from "../components/myOrders/OrderCard";
+import { useSearchParams } from "react-router-dom";
+import { createCheckoutSession } from "../service/payment.service";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,8 +65,9 @@ const MyOrders = () => {
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
-  const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
+  const [paymentMethod, setPaymentMethod] = useState("online");
   const [isSaving, setIsSaving] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const processStatus = (status) => {
     if (status === "pending") return "Pending";
@@ -79,19 +82,28 @@ const MyOrders = () => {
     if (!paymentMethod) {
       popAlert("Error!", "Please select payment method first!", "error");
     } else if (paymentMethod === "online") {
-    } else if (paymentMethod === "cash_on_delivery") {
       setIsSaving(true);
-      const response = await confirmOrder(orderId);
+      const response = await createCheckoutSession(orderId);
       setIsSaving(false);
       if (response.success) {
+        if (response?.data?.url) window.location.replace(response.data.url);
+      } else {
         response?.data?.message &&
-          popAlert("Success!", response?.data?.message, "success");
+          popAlert("Error!", response?.data?.message, "error");
+      }
+    } else if (paymentMethod === "cash_on_delivery") {
+      setIsSaving(true);
+      const response2 = await confirmOrder(orderId);
+      setIsSaving(false);
+      if (response2.success) {
+        response2?.data?.message &&
+          popAlert("Success!", response2?.data?.message, "success");
         setStatus("confirmed");
         setTabValue(2);
         setPage(1);
       } else {
-        response?.data?.message &&
-          popAlert("Error!", response?.data?.message, "error");
+        response2?.data?.message &&
+          popAlert("Error!", response2?.data?.message, "error");
       }
     }
   };
@@ -161,6 +173,41 @@ const MyOrders = () => {
     };
   }, [authState, page, status]);
 
+  // handle payment redirect
+  useEffect(() => {
+    let unmounted = false;
+
+    // handle success
+    if (searchParams.get("success") === "true") {
+      popAlert("Success!", "Payment has been successful completed!", "success");
+      if (!unmounted) {
+        if (searchParams.get("orderID"))
+          setSelectedOrderId(searchParams.get("orderID"));
+        setStatus("confirmed");
+        setTabValue(2);
+        setPage(1);
+      }
+    }
+
+    // handle cancellation
+    if (searchParams.get("canceled") === "true") {
+      popAlert("Error!", "Payment has been failed!", "error");
+      if (!unmounted) {
+        if (searchParams.get("orderID"))
+          setSelectedOrderId(searchParams.get("orderID"));
+        setStatus("requires_customer_confimation");
+        setTabValue(1);
+        setPage(1);
+      }
+    }
+
+    setSearchParams({});
+
+    return () => {
+      unmounted = true;
+    };
+  }, [searchParams, setSearchParams]);
+
   return (
     <React.Fragment>
       <Grid container>
@@ -181,8 +228,8 @@ const MyOrders = () => {
                 aria-label="basic tabs example"
               >
                 <Tab label="Pending" {...a11yProps(0)} />
-                <Tab label="To Be Approved" {...a11yProps(1)} />
-                <Tab label="Ongoing" {...a11yProps(2)} />
+                <Tab label="To Be Confirmed" {...a11yProps(1)} />
+                <Tab label="Confirmed" {...a11yProps(2)} />
                 <Tab label="Completed" {...a11yProps(3)} />
                 <Tab label="Rejected" {...a11yProps(4)} />
               </Tabs>

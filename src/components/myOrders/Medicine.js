@@ -90,21 +90,27 @@ const Medicine = ({ medicine, onClose }) => {
                 background: "#eed202",
               }}
             >
-              <Typography fontWeight={"bold"}>
-                Available At {medicine?.suggession?.name}{" "}
-                {(medicine?.suggession?.crowDistance &&
-                  `${medicine.suggession.crowDistance.toLocaleString(
-                    "en-us"
-                  )}km Away From Your Delivery Location.`) ||
-                  "N/A"}{" "}
-                <u
-                  style={{ cursor: "pointer" }}
-                  onClick={handlePharmacyRedirect}
-                >
-                  Click Here
-                </u>{" "}
-                To View.
-              </Typography>
+              {medicine?.suggession ? (
+                <Typography fontWeight={"bold"}>
+                  Available At {medicine?.suggession?.name}{" "}
+                  {(medicine?.suggession?.crowDistance &&
+                    `${medicine.suggession.crowDistance.toLocaleString(
+                      "en-us"
+                    )}km Away From Your Delivery Location.`) ||
+                    "N/A"}{" "}
+                  <u
+                    style={{ cursor: "pointer" }}
+                    onClick={handlePharmacyRedirect}
+                  >
+                    Click Here
+                  </u>{" "}
+                  To View.
+                </Typography>
+              ) : (
+                <Typography fontWeight={"bold"}>
+                  It Seems That Medicine Has Not Been Found Anywhere!
+                </Typography>
+              )}
             </Grid>
           )}
         </Grid>
