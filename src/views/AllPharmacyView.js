@@ -6,6 +6,7 @@ import SearchBar from "../components/common/SearchBar";
 import { getallPharmacies } from "../service/pharmacy.service";
 import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
+import { Link } from "react-router-dom";
 
 const AllPharmacyView = () => {
   const [page, setPage] = React.useState(1);
@@ -44,7 +45,15 @@ const AllPharmacyView = () => {
         >
           {pharmacydata.map((item, index) => (
             <Grid item xs={12} sm={12} md={4} lg={3} key={index}>
-              <MediaCard name={item.name} contactNumber={item.contactNumber} />
+              <Link
+                to={`/pharmacies/${item._id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <MediaCard
+                  name={item.name}
+                  contactNumber={item.contactNumber}
+                />
+              </Link>
             </Grid>
           ))}
         </Grid>
