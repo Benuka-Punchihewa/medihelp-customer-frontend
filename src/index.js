@@ -48,7 +48,8 @@ root.render(
             <Route path="/" element={<Home />} />
             <Route path="/pharmacies/:pharamcyId" element={<PharamcyView />} />
             <Route path="/pharmacies" element={<AllPharmacyView />} />
-            <Route path="/my-orders" element={<MyOrders />} />
+            <Route path="/map-google" element={<MapGoogle/>}/>
+            <Route path="/my-orders" element={<MyOrders />} />  
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
