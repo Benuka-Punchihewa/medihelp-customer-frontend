@@ -18,9 +18,10 @@ import {
 } from "@mui/material";
 import OrderCard from "../assets/styles/components/OrderCard";
 import { useSelector } from "react-redux";
-import { getAllOrders } from "../service/order.service";
+import { confirmOrder, getAllOrders } from "../service/order.service";
 import Popup from "../components/common/Popup";
 import Medicine from "../assets/styles/components/Medicine";
+import { popAlert } from "../utils/alerts";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,7 +55,7 @@ function a11yProps(index) {
 const MyOrders = () => {
   const authState = useSelector((state) => state.auth);
 
-  const [value, setValue] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
   const [page, setPage] = useState(1);
   const [orders, setOrders] = useState([]);
   const [totalPages, setTotalPages] = useState();
@@ -63,9 +64,36 @@ const MyOrders = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleOrderConfrim = (orderId) => {
-    console.log(orderId);
+  const processStatus = (status) => {
+    if (status === "pending") return "Pending";
+    else if (status === "requires_customer_confimation")
+      return "Requires Confirmation";
+    else if (status === "confirmed") return "Confirmed";
+    else if (status === "cancelled") return "Cancelled";
+    else if (status === "completed") return "Completed";
+  };
+
+  const handleOrderConfirm = async (orderId) => {
+    if (!paymentMethod) {
+      popAlert("Error!", "Please select payment method first!", "error");
+    } else if (paymentMethod === "online") {
+    } else if (paymentMethod === "cash_on_delivery") {
+      setIsSaving(true);
+      const response = await confirmOrder(orderId);
+      setIsSaving(false);
+      if (response.success) {
+        response?.data?.message &&
+          popAlert("Success!", response?.data?.message, "success");
+        setStatus("confirmed");
+        setTabValue(2);
+        setPage(1);
+      } else {
+        response?.data?.message &&
+          popAlert("Error!", response?.data?.message, "error");
+      }
+    }
   };
 
   const handleOrderCancel = (orderId) => {
@@ -77,7 +105,7 @@ const MyOrders = () => {
   };
 
   const handleTabChange = (event, newValue) => {
-    setValue(newValue);
+    setTabValue(newValue);
     setPage(1);
     if (newValue === 0) {
       setStatus("pending");
@@ -148,7 +176,7 @@ const MyOrders = () => {
             </Box>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs
-                value={value}
+                value={tabValue}
                 onChange={handleTabChange}
                 aria-label="basic tabs example"
               >
@@ -159,7 +187,7 @@ const MyOrders = () => {
                 <Tab label="Rejected" {...a11yProps(4)} />
               </Tabs>
             </Box>
-            <TabPanel value={value} index={value}>
+            <TabPanel value={tabValue} index={tabValue}>
               {loading ? (
                 <Box
                   sx={{
@@ -237,7 +265,44 @@ const MyOrders = () => {
           </Grid>
           <Grid item md={6}>
             <Grid container spacing={2}>
-              <Grid item>
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    ...boxStyles,
+                  }}
+                >
+                  <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                      <Box display="flex" width={"100%"}>
+                        <Box
+                          display="flex"
+                          justifyContent={"flex-start"}
+                          width={"100%"}
+                        >
+                          <Typography variant="p" fontWeight={"bold"}>
+                            Status:
+                          </Typography>
+                        </Box>
+                        <Box
+                          display="flex"
+                          justifyContent={"flex-end"}
+                          width={"100%"}
+                        >
+                          <Typography
+                            textOverflow={"ellipsis"}
+                            whiteSpace={"nowrap"}
+                          >
+                            {(selectedOrder?.status &&
+                              processStatus(selectedOrder.status)) ||
+                              "N/A"}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
                 <Box
                   sx={{
                     ...boxStyles,
@@ -355,7 +420,9 @@ const MyOrders = () => {
                             textOverflow={"ellipsis"}
                             whiteSpace={"nowrap"}
                           >
-                            {selectedOrder?.payment?.status ? "Yes" : "No"}
+                            {selectedOrder?.payment?.status
+                              ? "Complete"
+                              : "Pending"}
                           </Typography>
                         </Box>
                       </Box>
@@ -450,68 +517,86 @@ const MyOrders = () => {
                   </Grid>
                 </Box>
               </Grid>
-              <Grid item xs={12}>
-                <Box
-                  sx={{
-                    ...boxStyles,
-                  }}
-                >
-                  <Typography variant="h6" fontWeight={"bold"} sx={{ pb: 1 }}>
-                    Order Actions
-                  </Typography>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                      <FormControl>
-                        <FormLabel id="demo-row-radio-buttons-group-label">
-                          Payment Method
-                        </FormLabel>
-                        <RadioGroup
-                          row
-                          aria-labelledby="demo-row-radio-buttons-group-label"
-                          name="row-radio-buttons-group"
-                          value={paymentMethod}
-                          onChange={handlePaymentMethodChange}
-                        >
-                          <FormControlLabel
-                            value="online"
-                            control={<Radio />}
-                            label="Online"
-                          />
-                          <FormControlLabel
-                            value="cash_on_delivery"
-                            control={<Radio />}
-                            label="Cash On Delivery"
-                          />
-                        </RadioGroup>
-                      </FormControl>
+              {status === "requires_customer_confimation" && (
+                <Grid item xs={12}>
+                  <Box
+                    sx={{
+                      ...boxStyles,
+                    }}
+                  >
+                    <Typography variant="h6" fontWeight={"bold"} sx={{ pb: 1 }}>
+                      Order Actions
+                    </Typography>
+                    <Grid container spacing={1}>
+                      <Grid item xs={12}>
+                        <FormControl>
+                          <FormLabel id="demo-row-radio-buttons-group-label">
+                            Payment Method
+                          </FormLabel>
+                          <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                            value={paymentMethod}
+                            onChange={handlePaymentMethodChange}
+                          >
+                            <FormControlLabel
+                              value="online"
+                              control={<Radio />}
+                              label="Online"
+                            />
+                            <FormControlLabel
+                              value="cash_on_delivery"
+                              control={<Radio />}
+                              label="Cash On Delivery"
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Box display="flex" justifyContent={"flex-end"}>
+                          <Button
+                            variant="contained"
+                            onClick={() => handleOrderCancel(selectedOrder._id)}
+                            sx={{
+                              borderRadius: "8px",
+                              mr: 1,
+                            }}
+                            color="error"
+                            disabled={isSaving}
+                          >
+                            Cancel
+                            {isSaving && (
+                              <>
+                                &nbsp;&nbsp;
+                                <CircularProgress size={"20px"} />
+                              </>
+                            )}
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={() =>
+                              handleOrderConfirm(selectedOrder._id)
+                            }
+                            sx={{
+                              borderRadius: "8px",
+                            }}
+                            disabled={isSaving}
+                          >
+                            Confirm
+                            {isSaving && (
+                              <>
+                                &nbsp;&nbsp;
+                                <CircularProgress size={"20px"} />
+                              </>
+                            )}
+                          </Button>
+                        </Box>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                      <Box display="flex" justifyContent={"flex-end"}>
-                        <Button
-                          variant="contained"
-                          onClick={() => handleOrderConfrim(selectedOrder._id)}
-                          sx={{
-                            borderRadius: "8px",
-                            mr: 1,
-                          }}
-                          color="error"
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          variant="contained"
-                          onClick={() => handleOrderCancel(selectedOrder._id)}
-                          sx={{
-                            borderRadius: "8px",
-                          }}
-                        >
-                          Confirm
-                        </Button>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Grid>
+                  </Box>
+                </Grid>
+              )}
             </Grid>
           </Grid>
         </Grid>
