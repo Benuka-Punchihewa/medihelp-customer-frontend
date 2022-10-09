@@ -23,6 +23,10 @@ const MapGoogle =() => {
     const dispatch = useDispatch();
 
 
+    const handleClick = async (e) => {
+      window.location.replace("/pharmacies"); 
+  };
+
     const handleMapInput = (inputs) =>{
       setInputs(inputs);
         dispatch(setMap.setLocation(inputs));
@@ -55,7 +59,7 @@ const MapGoogle =() => {
         </Typography>
         </Grid>
         <Grid item xs={3} sx={{mt:1}}>
-          <ContinueButton />        
+          <ContinueButton onClick={handleClick} />        
         </Grid>
       </Grid>
    </Box>

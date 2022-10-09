@@ -5,11 +5,7 @@ import colors from "../../styles/colors";
 
 
 
-const ExploreButton = () => {
-
-  const handleClick = async (e) => {
-          window.location.replace("/map-google"); 
-    };
+const ExploreButton = ({onClick}) => {
 
   return (
     <React.Fragment>
@@ -17,7 +13,7 @@ const ExploreButton = () => {
         <Button
           variant="contained"
           size="large"
-             onClick={handleClick}
+             onClick={onClick}
           sx={{
             height: 50,
             borderRadius: "5px 5px 5px 5px",

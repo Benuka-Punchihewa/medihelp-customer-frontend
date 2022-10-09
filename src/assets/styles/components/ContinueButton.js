@@ -4,18 +4,14 @@ import { Box, Button } from "@mui/material";
 import colors from "../colors";
 
 
-const ContinueButton = ({handleMapInput}) => {
-
-  const handleClick = async (e) => {
-    window.location.replace("/pharmacies"); 
-};
+const ContinueButton = ({onClick}) => {
 
   return (
     <React.Fragment>
       <Box>
         <Button
           variant="contained"
-          onClick={handleClick}
+          onClick={onClick}
           sx={{
             height: 50,
             borderRadius: "5px 5px 5px 5px",
