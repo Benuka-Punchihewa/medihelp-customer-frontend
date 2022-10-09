@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 
 const AllPharmacyView = () => {
   const authState = useSelector((state) => state.auth);
+  const mapState = useSelector((state) => state.map);
 
   const [page, setPage] = React.useState(1);
   const handleChange = (event, value) => {
@@ -23,8 +24,9 @@ const AllPharmacyView = () => {
   useEffect(() => {
     let unmounted = false;
 
+    console.log(mapState);
     const fetchAndSet = async () => {
-      const response = await getallPharmacies(page, 9, "desc");
+      const response = await getallPharmacies(page, 6, "desc");
     
       if (response.success){
         if(!unmounted){
@@ -35,11 +37,11 @@ const AllPharmacyView = () => {
     }
 
     fetchAndSet();
-      
+
     return () =>{
       unmounted = true;
     }
-  }, [authState,page]);
+  }, [authState, mapState , page]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

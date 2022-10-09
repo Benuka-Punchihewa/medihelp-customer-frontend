@@ -8,8 +8,9 @@ const mapSlice = createSlice({
   },
   reducers: {
     setLocation(state, action) {
-      state.latitude = action.payload.latitude;
-      state.longitude = action.payload.longitude;
+      state.latitude = action.payload.location.latitude;
+      state.longitude = action.payload.location.longitude;
+      console.log(state,action);
     },
   },
 });

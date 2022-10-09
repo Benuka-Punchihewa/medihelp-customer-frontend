@@ -3,14 +3,19 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, Button } from "@mui/material";
 import colors from "../colors";
 
-const ContinueButton = ({ onClick }) => {
+
+const ContinueButton = ({handleMapInput}) => {
+
+  const handleClick = async (e) => {
+    window.location.replace("/pharmacies"); 
+};
+
   return (
     <React.Fragment>
       <Box>
         <Button
           variant="contained"
-          // size="large"
-          onClick={onClick}
+          onClick={handleClick}
           sx={{
             height: 50,
             borderRadius: "5px 5px 5px 5px",

@@ -3,14 +3,21 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Box, Button } from "@mui/material";
 import colors from "../../styles/colors";
 
-const ExploreButton = ({ onClick }) => {
+
+
+const ExploreButton = () => {
+
+  const handleClick = async (e) => {
+          window.location.replace("/map-google"); 
+    };
+
   return (
     <React.Fragment>
       <Box>
         <Button
           variant="contained"
           size="large"
-          onClick={onClick}
+             onClick={handleClick}
           sx={{
             height: 50,
             borderRadius: "5px 5px 5px 5px",
@@ -20,6 +27,7 @@ const ExploreButton = ({ onClick }) => {
             fontWeight: 'bold',
           }}>
          Explore <ArrowForwardIcon sx={{m:3}} />
+
         </Button>
       </Box>
     </React.Fragment>

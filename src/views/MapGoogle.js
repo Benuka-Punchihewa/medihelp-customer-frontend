@@ -4,11 +4,12 @@ import '../assets/styles/GoogelMap/mapGoogel.css'
 import {
   Typography,
   Box,
-  Grid
+  Grid,
 } from "@mui/material";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ContinueButton from '../assets/styles/components/ContinueButton';
-//import { Box } from '@mui/system';
+import { setMap } from '../store/mapSlice';
+import { useDispatch } from "react-redux";
 
 const MapGoogle =() => {
       
@@ -18,11 +19,15 @@ const MapGoogle =() => {
     const [zoom, setZoom] = useState(8);
     const [mapMarker, setMapMarker] = useState(false);
     const [inputs, setInputs] = useState();
+  
+    const dispatch = useDispatch();
 
 
     const handleMapInput = (inputs) =>{
       setInputs(inputs);
-      console.log(inputs);
+        dispatch(setMap.setLocation(inputs));
+      console.log(inputs)
+
     };
 
     //load gopgel map API
@@ -38,7 +43,8 @@ const MapGoogle =() => {
     }
 
     if (!isLoaded) return <div>Loading...</div>;
-    
+  
+
   return (
  <div>
    <Box sx={{height:100}}>
@@ -49,7 +55,7 @@ const MapGoogle =() => {
         </Typography>
         </Grid>
         <Grid item xs={3} sx={{mt:1}}>
-          <ContinueButton />
+          <ContinueButton />        
         </Grid>
       </Grid>
    </Box>
