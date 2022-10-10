@@ -20,10 +20,15 @@ import { registerUser } from "../../service/register.service";
 import signIn from "../../models/signIn";
 import register from "../../models/register";
 import { popAlert } from "../../utils/alerts";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/authSlice";
 
 const NavBar = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showRegiserPopup, setshowRegiserPopup] = useState(false);
+
+  const dispatch = useDispatch();
+
   const [inputs, setInputs] = useState(signIn);
   //register
   const [RegInputs, setRegInputs] = useState(register);
@@ -42,10 +47,13 @@ const NavBar = () => {
     const response = await createUser(inputs);
 
     if (response.success) {
+      setLoading(false);
+      dispatch(authActions.login(response.data));
       response?.data?.message &&
         popAlert("Success!", response?.data?.message, "success").then(
           (res) => {}
         );
+      window.location.replace("/");
     } else {
       response?.data?.message &&
         popAlert("Error!", response?.data?.message, "error");
@@ -210,10 +218,8 @@ const NavBar = () => {
           </Box>
         </Box>
       </Popup>
-      {/* 
 
-
-    {/* register popup */}
+      {/* register popup */}
 
       <Popup
         width={650}

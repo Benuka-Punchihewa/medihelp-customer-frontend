@@ -1,7 +1,7 @@
 import { Box, Grid, Modal, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import popupStyles from "../../assets/styles/Popup";
+import popupStyles from "../../assets/styles/components/Popup";
 import CloseIcon from "@mui/icons-material/Close";
 
 const Popup = ({ title, width, show, onClose, children }) => {
@@ -36,8 +36,7 @@ const Popup = ({ title, width, show, onClose, children }) => {
               >
                 <Grid container>
                   <Grid item xs={10}>
-                    <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-                      {" "}
+                    <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                       {title}
                     </Typography>
                   </Grid>
