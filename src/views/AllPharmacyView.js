@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import MediaCard from "../components/common/MediaCard";
 import SearchBar from "../components/common/SearchBar";
-import { getallPharmacies } from "../service/pharmacy.service";
+import { getPharmaciesByNearestLocation } from "../service/pharmacy.service";
 import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
 import { Link } from "react-router-dom";
@@ -23,10 +23,9 @@ const AllPharmacyView = () => {
 
   useEffect(() => {
     let unmounted = false;
-
-    console.log(mapState);
+    
     const fetchAndSet = async () => {
-      const response = await getallPharmacies(page, 6, "desc");
+      const response = await getPharmaciesByNearestLocation(page, 6, "desc",mapState.latitude,mapState.longitude);
     
       if (response.success){
         if(!unmounted){
