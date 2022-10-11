@@ -96,7 +96,7 @@ const NavBar = () => {
     return () => {
       unmounted = true;
     };
-  }, [confirmPassword]);
+  }, [confirmPassword,RegInputs.password]);
 
   return (
     <React.Fragment>
@@ -158,7 +158,6 @@ const NavBar = () => {
             </Typography>
             <Box sx={{ mb: 5, m: 2 }}>
               <TextField
-                id="outlined-basic"
                 variant="filled"
                 label="Email"
                 fullWidth
@@ -177,7 +176,6 @@ const NavBar = () => {
 
             <Box sx={{ mb: 5, m: 2, mt: 6 }}>
               <TextField
-                id="outlined-password-input"
                 variant="filled"
                 label="Password"
                 type="password"
@@ -240,7 +238,6 @@ const NavBar = () => {
           <form onSubmit={handleRegisterSubmit}>
             <Box sx={{ mb: 2, m: 3 }}>
               <TextField
-                id="outlined-basic"
                 variant="filled"
                 label="First Name"
                 fullWidth
@@ -259,7 +256,6 @@ const NavBar = () => {
 
             <Box sx={{ mb: 2, m: 3 }}>
               <TextField
-                id="outlined-basic"
                 variant="filled"
                 label="Last Name"
                 fullWidth
@@ -278,7 +274,6 @@ const NavBar = () => {
 
             <Box sx={{ mb: 2, m: 3 }}>
               <TextField
-                id="outlined-basic"
                 variant="filled"
                 label="NIC"
                 fullWidth
@@ -316,7 +311,6 @@ const NavBar = () => {
 
             <Box sx={{ mb: 2, m: 3 }}>
               <TextField
-                id="outlined-basic"
                 variant="filled"
                 label="Mobile"
                 fullWidth
@@ -335,7 +329,6 @@ const NavBar = () => {
 
             <Box sx={{ mb: 2, m: 3 }}>
               <TextField
-                id="outlined-basic"
                 variant="filled"
                 label="E-mail"
                 type="email"
@@ -378,7 +371,6 @@ const NavBar = () => {
 
             <Box sx={{ mb: 2, m: 3 }}>
               <TextField
-                id="outlined-password-input"
                 variant="filled"
                 label="Password"
                 type="password"
@@ -398,7 +390,6 @@ const NavBar = () => {
 
             <Box sx={{ mb: 2, m: 3 }}>
               <TextField
-                id="outlined-password-input"
                 variant="filled"
                 label="Confirm Password"
                 type="password"
