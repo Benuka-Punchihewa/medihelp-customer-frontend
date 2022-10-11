@@ -1,7 +1,7 @@
 import { getApi} from "../utils/axios";
 import { buildResponse } from "../utils/responseBuilder";
 
-export const getPharmaciesByNearestLocation = async (page,limit,orderBy,lat,lng) => {
+export const getPharmaciesByNearestLocation = async (page,limit,orderBy,lat,lng,keyword) => {
     const response = await getApi()
       .get("/pharmacies/v/customer", {
         params: {
@@ -9,7 +9,8 @@ export const getPharmaciesByNearestLocation = async (page,limit,orderBy,lat,lng)
           limit,
           orderBy,
           lat,
-          lng
+          lng,
+          keyword
         },
       })
       .then((res) => {

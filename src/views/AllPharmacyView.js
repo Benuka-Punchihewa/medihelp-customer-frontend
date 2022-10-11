@@ -20,12 +20,17 @@ const AllPharmacyView = () => {
 
   const [pharmacydata, setPharmacydata] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
+  const [keyword, setKeyword] = useState("");
+
+  const handleSearch = (input) => {
+    setKeyword(input);
+  };
 
   useEffect(() => {
     let unmounted = false;
-    
+
     const fetchAndSet = async () => {
-      const response = await getPharmaciesByNearestLocation(page, 6, "desc",mapState.latitude,mapState.longitude);
+      const response = await getPharmaciesByNearestLocation(page, 6, "desc",mapState.latitude,mapState.longitude,keyword);
     
       if (response.success){
         if(!unmounted){
@@ -40,12 +45,15 @@ const AllPharmacyView = () => {
     return () =>{
       unmounted = true;
     }
-  }, [authState, mapState , page]);
+  }, [authState, mapState, page, keyword]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Box sx={{ mt: 2, p: 3, width: "80%", ml: 15 }}>
-        <SearchBar />
+        <SearchBar 
+         onSearch={handleSearch}
+         placeholderText="Search Pharmacies..."
+         />
       </Box>
       <Typography variant="h6" sx={{ fontWeight: "bold", ml: 2 }}>
         Neareast Pharmacies
