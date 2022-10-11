@@ -3,12 +3,16 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import MediaCard from "../components/common/MediaCard";
 import SearchBar from "../components/common/SearchBar";
-import { getallPharmacies } from "../service/pharmacy.service";
+import { getPharmaciesByNearestLocation } from "../service/pharmacy.service";
 import Typography from "@mui/material/Typography";
 import Pagination from "@mui/material/Pagination";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AllPharmacyView = () => {
+  const authState = useSelector((state) => state.auth);
+  const mapState = useSelector((state) => state.map);
+
   const [page, setPage] = React.useState(1);
   const handleChange = (event, value) => {
     setPage(value);
@@ -18,11 +22,25 @@ const AllPharmacyView = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    getallPharmacies(page, 9, "desc").then((response) => {
-      setPharmacydata(response.data.content);
-      setTotalPages(response.data.totalPages);
-    });
-  }, [page]);
+    let unmounted = false;
+    
+    const fetchAndSet = async () => {
+      const response = await getPharmaciesByNearestLocation(page, 6, "desc",mapState.latitude,mapState.longitude);
+    
+      if (response.success){
+        if(!unmounted){
+          setPharmacydata(response?.data?.content || []);
+          setTotalPages(response?.data?.totalPages || 0);
+        }
+      }
+    }
+
+    fetchAndSet();
+
+    return () =>{
+      unmounted = true;
+    }
+  }, [authState, mapState , page]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

@@ -8,6 +8,11 @@ import colors from '../../assets/styles/colors';
 import ExploreButton from '../../assets/styles/components/ExploreButton';
 
 const HomeBanner = () => {
+
+  const handleClick = async (e) => {
+            window.location.replace("/map-google"); 
+      };
+
   return (
     <Card
       sx={{
@@ -67,7 +72,7 @@ const HomeBanner = () => {
             top: "90%",
           }} 
     >
-        <ExploreButton/>
+        <ExploreButton onClick={handleClick}/>
     </Box> 
         
 

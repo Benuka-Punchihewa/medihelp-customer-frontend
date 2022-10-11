@@ -12,6 +12,7 @@ import Home from "./views/Home";
 import colors from "./assets/styles/colors";
 import PharamcyView from "./views/PharmacyView";
 import AllPharmacyView from "./views/AllPharmacyView";
+import MapGoogle from "./views/MapGoogle";
 
 // redux
 import { Provider } from "react-redux";
@@ -47,7 +48,8 @@ root.render(
             <Route path="/" element={<Home />} />
             <Route path="/pharmacies/:pharamcyId" element={<PharamcyView />} />
             <Route path="/pharmacies" element={<AllPharmacyView />} />
-            <Route path="/my-orders" element={<MyOrders />} />
+            <Route path="/map-google" element={<MapGoogle/>}/>
+            <Route path="/my-orders" element={<MyOrders />} />  
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
