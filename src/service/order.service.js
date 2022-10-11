@@ -46,3 +46,16 @@ export const confirmOrder = async (orderId) => {
 
   return response;
 };
+
+export const rejectOrder = async (orderId) => {
+  const response = await getApi()
+    .patch(`/orders/${orderId}/reject`, {})
+    .then((res) => {
+      return buildResponse(true, res.data);
+    })
+    .catch((err) => {
+      return buildResponse(false, err.response.data, err.response.status);
+    });
+
+  return response;
+};
