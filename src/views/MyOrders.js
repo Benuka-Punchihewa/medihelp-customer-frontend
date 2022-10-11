@@ -16,7 +16,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useSelector } from "react-redux";
-import { confirmOrder, getAllOrders } from "../service/order.service";
+import {
+  confirmOrder,
+  getAllOrders,
+  rejectOrder,
+} from "../service/order.service";
 import Popup from "../components/common/Popup";
 import { popAlert } from "../utils/alerts";
 import Medicine from "../components/myOrders/Medicine";
@@ -108,8 +112,20 @@ const MyOrders = () => {
     }
   };
 
-  const handleOrderCancel = (orderId) => {
-    console.log(orderId);
+  const handleOrderCancel = async (orderId) => {
+    setIsSaving(true);
+    const response = await rejectOrder(orderId);
+    setIsSaving(false);
+    if (response.success) {
+      response?.data?.message &&
+        popAlert("Success!", response?.data?.message, "success");
+      setStatus("cancelled");
+      setTabValue(4);
+      setPage(1);
+    } else {
+      response?.data?.message &&
+        popAlert("Error!", response?.data?.message, "error");
+    }
   };
 
   const handlePaymentMethodChange = (e) => {
@@ -564,7 +580,8 @@ const MyOrders = () => {
                   </Grid>
                 </Box>
               </Grid>
-              {status === "requires_customer_confimation" && (
+              {(status === "requires_customer_confimation" ||
+                status === "pending") && (
                 <Grid item xs={12}>
                   <Box
                     sx={{
@@ -575,31 +592,33 @@ const MyOrders = () => {
                       Order Actions
                     </Typography>
                     <Grid container spacing={1}>
-                      <Grid item xs={12}>
-                        <FormControl>
-                          <FormLabel id="demo-row-radio-buttons-group-label">
-                            Payment Method
-                          </FormLabel>
-                          <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
-                            value={paymentMethod}
-                            onChange={handlePaymentMethodChange}
-                          >
-                            <FormControlLabel
-                              value="online"
-                              control={<Radio />}
-                              label="Online"
-                            />
-                            <FormControlLabel
-                              value="cash_on_delivery"
-                              control={<Radio />}
-                              label="Cash On Delivery"
-                            />
-                          </RadioGroup>
-                        </FormControl>
-                      </Grid>
+                      {status === "requires_customer_confimation" && (
+                        <Grid item xs={12}>
+                          <FormControl>
+                            <FormLabel id="demo-row-radio-buttons-group-label">
+                              Payment Method
+                            </FormLabel>
+                            <RadioGroup
+                              row
+                              aria-labelledby="demo-row-radio-buttons-group-label"
+                              name="row-radio-buttons-group"
+                              value={paymentMethod}
+                              onChange={handlePaymentMethodChange}
+                            >
+                              <FormControlLabel
+                                value="online"
+                                control={<Radio />}
+                                label="Online"
+                              />
+                              <FormControlLabel
+                                value="cash_on_delivery"
+                                control={<Radio />}
+                                label="Cash On Delivery"
+                              />
+                            </RadioGroup>
+                          </FormControl>
+                        </Grid>
+                      )}
                       <Grid item xs={12}>
                         <Box display="flex" justifyContent={"flex-end"}>
                           <Button
@@ -620,24 +639,26 @@ const MyOrders = () => {
                               </>
                             )}
                           </Button>
-                          <Button
-                            variant="contained"
-                            onClick={() =>
-                              handleOrderConfirm(selectedOrder._id)
-                            }
-                            sx={{
-                              borderRadius: "8px",
-                            }}
-                            disabled={isSaving}
-                          >
-                            Confirm
-                            {isSaving && (
-                              <>
-                                &nbsp;&nbsp;
-                                <CircularProgress size={"20px"} />
-                              </>
-                            )}
-                          </Button>
+                          {status === "requires_customer_confimation" && (
+                            <Button
+                              variant="contained"
+                              onClick={() =>
+                                handleOrderConfirm(selectedOrder._id)
+                              }
+                              sx={{
+                                borderRadius: "8px",
+                              }}
+                              disabled={isSaving}
+                            >
+                              Confirm
+                              {isSaving && (
+                                <>
+                                  &nbsp;&nbsp;
+                                  <CircularProgress size={"20px"} />
+                                </>
+                              )}
+                            </Button>
+                          )}
                         </Box>
                       </Grid>
                     </Grid>
