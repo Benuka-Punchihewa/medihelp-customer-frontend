@@ -20,6 +20,7 @@ import {
   confirmOrder,
   getAllOrders,
   rejectOrder,
+  removeOrder,
 } from "../service/order.service";
 import Popup from "../components/common/Popup";
 import { popAlert } from "../utils/alerts";
@@ -115,6 +116,22 @@ const MyOrders = () => {
   const handleOrderCancel = async (orderId) => {
     setIsSaving(true);
     const response = await rejectOrder(orderId);
+    setIsSaving(false);
+    if (response.success) {
+      response?.data?.message &&
+        popAlert("Success!", response?.data?.message, "success");
+      setStatus("cancelled");
+      setTabValue(4);
+      setPage(1);
+    } else {
+      response?.data?.message &&
+        popAlert("Error!", response?.data?.message, "error");
+    }
+  };
+
+  const handleOrderRemove = async (orderId) => {
+    setIsSaving(true);
+    const response = await removeOrder(orderId);
     setIsSaving(false);
     if (response.success) {
       response?.data?.message &&
@@ -581,7 +598,9 @@ const MyOrders = () => {
                 </Box>
               </Grid>
               {(status === "requires_customer_confimation" ||
-                status === "pending") && (
+                status === "pending" ||
+                status === "cancelled" ||
+                status === "completed") && (
                 <Grid item xs={12}>
                   <Box
                     sx={{
@@ -621,24 +640,29 @@ const MyOrders = () => {
                       )}
                       <Grid item xs={12}>
                         <Box display="flex" justifyContent={"flex-end"}>
-                          <Button
-                            variant="contained"
-                            onClick={() => handleOrderCancel(selectedOrder._id)}
-                            sx={{
-                              borderRadius: "8px",
-                              mr: 1,
-                            }}
-                            color="error"
-                            disabled={isSaving}
-                          >
-                            Cancel
-                            {isSaving && (
-                              <>
-                                &nbsp;&nbsp;
-                                <CircularProgress size={"20px"} />
-                              </>
-                            )}
-                          </Button>
+                          {(status === "requires_customer_confimation" ||
+                            status === "pending") && (
+                            <Button
+                              variant="contained"
+                              onClick={() =>
+                                handleOrderCancel(selectedOrder._id)
+                              }
+                              sx={{
+                                borderRadius: "8px",
+                                mr: 1,
+                              }}
+                              color="error"
+                              disabled={isSaving}
+                            >
+                              Cancel
+                              {isSaving && (
+                                <>
+                                  &nbsp;&nbsp;
+                                  <CircularProgress size={"20px"} />
+                                </>
+                              )}
+                            </Button>
+                          )}
                           {status === "requires_customer_confimation" && (
                             <Button
                               variant="contained"
@@ -651,6 +675,28 @@ const MyOrders = () => {
                               disabled={isSaving}
                             >
                               Confirm
+                              {isSaving && (
+                                <>
+                                  &nbsp;&nbsp;
+                                  <CircularProgress size={"20px"} />
+                                </>
+                              )}
+                            </Button>
+                          )}
+                          {(status === "cancelled" ||
+                            status === "completed") && (
+                            <Button
+                              color="error"
+                              variant="contained"
+                              onClick={() =>
+                                handleOrderRemove(selectedOrder._id)
+                              }
+                              sx={{
+                                borderRadius: "8px",
+                              }}
+                              disabled={isSaving}
+                            >
+                              Remove
                               {isSaving && (
                                 <>
                                   &nbsp;&nbsp;

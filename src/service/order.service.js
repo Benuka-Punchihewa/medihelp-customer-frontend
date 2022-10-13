@@ -59,3 +59,16 @@ export const rejectOrder = async (orderId) => {
 
   return response;
 };
+
+export const removeOrder = async (orderId) => {
+  const response = await getApi()
+    .delete(`/orders/${orderId}/remove`, {})
+    .then((res) => {
+      return buildResponse(true, res.data);
+    })
+    .catch((err) => {
+      return buildResponse(false, err.response.data, err.response.status);
+    });
+
+  return response;
+};
