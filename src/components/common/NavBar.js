@@ -20,7 +20,7 @@ import { registerUser } from "../../service/register.service";
 import signIn from "../../models/signIn";
 import register from "../../models/register";
 import { popAlert } from "../../utils/alerts";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/authSlice";
 
 const NavBar = () => {
@@ -28,6 +28,7 @@ const NavBar = () => {
   const [showRegiserPopup, setshowRegiserPopup] = useState(false);
 
   const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
 
   const [inputs, setInputs] = useState(signIn);
   //register
@@ -96,7 +97,7 @@ const NavBar = () => {
     return () => {
       unmounted = true;
     };
-  }, [confirmPassword,RegInputs.password]);
+  }, [confirmPassword, RegInputs.password]);
 
   return (
     <React.Fragment>
@@ -126,18 +127,31 @@ const NavBar = () => {
               alignItems="center"
               sx={{ height: "100%" }}
             >
-              <Typography
-                sx={{ ...navbarStyles.signInUpBtn }}
-                onClick={() => setshowRegiserPopup(true)}
-              >
-                Register
-              </Typography>
-              <Typography
-                sx={{ ...navbarStyles.signInUpBtn }}
-                onClick={() => setShowPopup(true)}
-              >
-                Sign In
-              </Typography>
+              {authState?.isLoggedIn ? (
+                <>
+                  <Typography
+                    sx={{ ...navbarStyles.signInUpBtn }}
+                    onClick={() => dispatch(authActions.logout())}
+                  >
+                    Sign Out
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <Typography
+                    sx={{ ...navbarStyles.signInUpBtn }}
+                    onClick={() => setshowRegiserPopup(true)}
+                  >
+                    Register
+                  </Typography>
+                  <Typography
+                    sx={{ ...navbarStyles.signInUpBtn }}
+                    onClick={() => setShowPopup(true)}
+                  >
+                    Sign In
+                  </Typography>
+                </>
+              )}
             </Stack>
           </Grid>
         </Grid>
